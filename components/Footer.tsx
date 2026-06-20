@@ -49,21 +49,45 @@ export default function Footer() {
               {profile.socialLinks.map((link) => {
                 const Icon = socialIconMap[link.platform] || Globe;
                 const isPlainText = ["微信", "手机号", "微信号", "手机"].includes(link.platform);
-                // 微信号/手机号不是 URL，用 span 展示；其他用 Link 跳转
-                return isPlainText ? (
-                  <div
-                    key={link.platform}
-                    className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-[var(--fg-2)] border border-transparent cursor-default"
-                  >
-                    <span className="flex items-center gap-2">
-                      <Icon className="w-3.5 h-3.5" />
-                      {link.platform}
-                    </span>
-                    <span className="text-xs text-[var(--fg-4)] truncate max-w-[140px] hidden sm:block">
-                      {link.url}
-                    </span>
-                  </div>
-                ) : (
+                const isEmail = link.url.includes("@");
+                // 微信号/手机号不是 URL，用 span 展示
+                if (isPlainText) {
+                  return (
+                    <div
+                      key={link.platform}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-[var(--fg-2)] border border-transparent cursor-default"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Icon className="w-3.5 h-3.5" />
+                        {link.platform}
+                      </span>
+                      <span className="text-xs text-[var(--fg-4)] truncate max-w-[140px] hidden sm:block">
+                        {link.url}
+                      </span>
+                    </div>
+                  );
+                }
+                // 邮箱地址用 mailto: 链接
+                if (isEmail) {
+                  return (
+                    <a
+                      key={link.platform}
+                      href={`mailto:${link.url}`}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-[var(--fg-2)] hover:bg-[var(--bg-2)] hover:text-[var(--primary-bright)] transition-all border border-transparent hover:border-[var(--border)]"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Icon className="w-3.5 h-3.5" />
+                        {link.platform}
+                      </span>
+                      <span className="text-xs text-[var(--fg-4)] truncate max-w-[140px] hidden sm:block">
+                        {link.url}
+                      </span>
+                      <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </a>
+                  );
+                }
+                // 普通 URL 跳转
+                return (
                   <Link
                     key={link.platform}
                     href={link.url}

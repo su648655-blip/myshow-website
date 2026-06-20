@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Mail, MapPin, Briefcase, GraduationCap } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { useSiteData } from "@/components/DataProvider";
+import { assetPath } from "@/lib/utils";
 
 export default function AboutPage() {
   const { data } = useSiteData();
@@ -44,7 +45,7 @@ export default function AboutPage() {
                 <div className="relative w-28 h-28 mb-6">
                   {profile.avatar ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={profile.avatar} alt={profile.name} className="w-full h-full rounded-2xl object-cover border border-[var(--border-strong)]" />
+                    <img src={assetPath(profile.avatar)} alt={profile.name} className="w-full h-full rounded-2xl object-cover border border-[var(--border-strong)]" />
                   ) : (
                     <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[var(--primary)] via-[var(--primary-bright)] to-[var(--primary-glow)] flex items-center justify-center text-4xl font-black text-[var(--bg)] shadow-lg">
                       {profile.name[0]}
