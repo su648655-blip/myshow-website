@@ -64,7 +64,7 @@ export const profile: Profile = {
   bio: "深耕企业 AI 应用 8 年，主导过 5 亿元级 AI 项目落地。专注于帮助 500 强客户从 0 到 1 构建 AI 战略，将前沿模型能力转化为可衡量的业务增长。",
   location: "广州",
   email: "472662613@qq.com",
-  avatar: "/avatar.jpeg",
+  avatar: "/myshow-website/avatar.jpeg",
   wechat: "dengtuzi91",
   phone: "17665085909",
   headline: "AI SALES LEADER",
