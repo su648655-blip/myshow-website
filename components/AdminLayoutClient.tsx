@@ -19,6 +19,7 @@ import {
   Database,
 } from "lucide-react";
 import { isAuthenticated, login, logout } from "@/lib/store";
+import { useSiteData } from "@/components/DataProvider";
 
 const sidebarItems = [
   { href: "/admin", label: "仪表盘", icon: LayoutDashboard },
@@ -33,6 +34,8 @@ const sidebarItems = [
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { data } = useSiteData();
+  const { profile } = data;
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [password, setPasswordInput] = useState("");
   const [error, setError] = useState("");
@@ -134,11 +137,11 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
             <div className="absolute inset-0 bg-[var(--primary)] rounded-md" />
             <div className="absolute inset-0 bg-[var(--primary)] rounded-md blur-md opacity-50" />
             <div className="relative w-full h-full flex items-center justify-center text-[10px] font-black text-[var(--bg)]">
-              AI
+              {profile.logoText.charAt(0)}
             </div>
           </div>
           <div>
-            <div className="font-bold text-sm leading-tight">ZHANG.</div>
+            <div className="font-bold text-sm leading-tight">{profile.logoText}.</div>
             <div className="text-mono text-[10px] text-[var(--fg-4)] tracking-wider">ADMIN</div>
           </div>
         </Link>

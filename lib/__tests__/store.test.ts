@@ -65,8 +65,8 @@ describe("getSiteData / saveSiteData", () => {
 // ── 认证 ──────────────────────────────
 
 describe("login / logout / isAuthenticated", () => {
-  test("login('admin') 返回 true 并设置 sessionStorage", () => {
-    expect(login("admin")).toBe(true);
+  test("login('deng19910228') 返回 true 并设置 sessionStorage", () => {
+    expect(login("deng19910228")).toBe(true);
     expect(sessionStorage.getItem(AUTH_KEY)).toBe("true");
   });
 
@@ -76,7 +76,7 @@ describe("login / logout / isAuthenticated", () => {
   });
 
   test("logout 清除认证状态", () => {
-    login("admin");
+    login("deng19910228");
     expect(isAuthenticated()).toBe(true);
     logout();
     expect(isAuthenticated()).toBe(false);
