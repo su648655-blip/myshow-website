@@ -1,0 +1,9 @@
+{
+  "framework": "next",
+  "files": [
+    "app/**/*.tsx",
+    "components/**/*.tsx"
+  ],
+  "baseUrl": "http://localhost:3010/myshow-website/",
+  "cspChecked": true
+}

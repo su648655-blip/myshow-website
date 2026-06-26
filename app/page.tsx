@@ -3,22 +3,33 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, ArrowDown, Sparkles, TrendingUp, Building2, Brain } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
 import { useSiteData } from "@/components/DataProvider";
 import ContactModal from "@/components/ContactModal";
+import HeroSignalBackground from "@/components/brand/HeroSignalBackground";
+import SignalStrip from "@/components/brand/SignalStrip";
+import SignalPanel from "@/components/brand/SignalPanel";
+import DossierCard from "@/components/brand/DossierCard";
+import NoteRow from "@/components/brand/NoteRow";
+import CommercialCTA from "@/components/brand/CommercialCTA";
+import PunkLabel from "@/components/brand/PunkLabel";
 
-const tickerItems = [
-  "ENTERPRISE AI SOLUTIONS",
-  "•",
-  "FORTUNE 500 EXPERIENCE",
-  "•",
-  "¥800M+ ARR DRIVEN",
-  "•",
-  "12 INDUSTRIES SERVED",
-  "•",
-  "AI STRATEGY ADVISORY",
-  "•",
+const signalItems = ["DISCOVERY", "POC DESIGN", "ROI TRANSLATION", "CFO BUY-IN", "SCALE", "ENTERPRISE AI"];
+
+const proofSignals = [
+  { value: "¥800M+", label: "ARR DRIVEN", body: "从 POC 到规模化采购，推动亿元级 AI 项目商业闭环。" },
+  { value: "50+", label: "ENTERPRISE DEALS", body: "覆盖金融、政企、制造、零售等复杂采购场景。" },
+  { value: "12", label: "INDUSTRIES", body: "把行业痛点转译成可采购、可验证的 AI 价值。" },
+  { value: "8Y", label: "AI COMMERCIALIZATION", body: "长期处在技术、预算和组织共识的交界面。" },
+];
+
+const operatingModel = [
+  { step: "01", title: "DISCOVERY", body: "把客户模糊需求转成可量化业务问题，先判断这个场景值不值得卖。" },
+  { step: "02", title: "VALUE MAP", body: "把模型能力映射到成本、效率、收入指标，让价值进入预算语言。" },
+  { step: "03", title: "POC DESIGN", body: "让技术验证变成业务验证，用可衡量结果定义成功。" },
+  { step: "04", title: "CFO BUY-IN", body: "把方案翻译成 CFO 能算账、CEO 能判断的 ROI 叙事。" },
+  { step: "05", title: "SCALE", body: "从试点推进到集团级规模化采购，完成商业闭环。" },
 ];
 
 export default function Home() {
@@ -29,164 +40,90 @@ export default function Home() {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
-    <div className="relative">
-      {/* ============ Hero ============ */}
-      <section className="relative min-h-screen flex items-center bg-grid overflow-hidden">
-        <div className="aurora aurora-cyan" style={{ width: 700, height: 700, top: "-10%", left: "-15%" }} />
-        <div className="aurora aurora-blue" style={{ width: 500, height: 500, bottom: "5%", right: "-10%" }} />
+    <div className="relative signal-bg">
+      <section className="relative min-h-screen overflow-hidden px-4 pt-28 pb-16 sm:px-10 md:pt-36">
+        <HeroSignalBackground />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-10 w-full pt-16 md:pt-24">
-          {/* Status Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 md:mb-10"
-          >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass">
-              <span className="status-dot" />
-              <span className="text-mono text-[10px] md:text-[11px] tracking-wider text-[var(--fg-2)]">
-                {profile.statusText}
-              </span>
-            </div>
-          </motion.div>
-
-          {/* 标签 */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-mono text-[10px] md:text-xs tracking-wider text-[var(--fg-3)] mb-4 md:mb-6"
-          >
-            // {profile.tagline} · {profile.location.toUpperCase()}
-          </motion.div>
-
-          {/* 主标题 */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-mega mb-3 md:mb-4"
-          >
-            <span className="block">{profile.name}</span>
-            <span className="block text-gradient text-glow text-3xl sm:text-5xl md:text-mega">{profile.headline}</span>
-          </motion.h1>
-
-          {/* 副标题 */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="text-base md:text-xl text-[var(--fg-2)] max-w-3xl mb-8 md:mb-12 leading-relaxed"
-          >
-            {profile.bio}
-          </motion.p>
-
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-16 md:mb-20"
-          >
-            <Link href="/portfolio" className="btn-primary justify-center">
-              查看案例
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <button onClick={() => setContactOpen(true)} className="btn-secondary justify-center">
-              预约咨询
-            </button>
-          </motion.div>
-
-          {/* 数据指标 */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 pt-8 md:pt-12 border-t border-[var(--border)]"
-          >
-            {[
-              { value: "¥800M+", label: "ARR DRIVEN" },
-              { value: "8+", label: "YEARS IN AI" },
-              { value: "50+", label: "ENTERPRISE DEALS" },
-              { value: "12", label: "INDUSTRIES" },
-            ].map((stat, i) => (
-              <div key={i}>
-                <div className="metric-number text-2xl md:text-4xl mb-1 text-[var(--fg)]">{stat.value}</div>
-                <div className="text-mono text-[9px] md:text-[10px] tracking-widest text-[var(--fg-4)]">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            className="hidden md:flex absolute bottom-8 right-10 items-center gap-2 text-mono text-xs text-[var(--fg-4)] tracking-wider"
-          >
-            <span>SCROLL</span>
-            <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
-              <ArrowDown className="w-4 h-4 text-[var(--primary)]" />
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55 }}
+              className="mb-6 flex flex-wrap gap-2"
+            >
+              <PunkLabel>AI COMMERCIALIZATION</PunkLabel>
+              <PunkLabel tone="violet">BOARDROOM TRANSLATOR</PunkLabel>
+              <PunkLabel tone="yellow">ROI-FIRST</PunkLabel>
             </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.75, delay: 0.08 }}
+              className="text-mega max-w-5xl"
+            >
+              AI 销售不是卖工具。
+              <span className="block text-gradient">是翻译确定性。</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.22 }}
+              className="mt-7 max-w-3xl text-lg leading-8 text-[var(--fg-2)] md:text-xl"
+            >
+              {profile.name} / {profile.title}。{profile.bio}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.34 }}
+              className="mt-9 flex flex-col gap-3 sm:flex-row"
+            >
+              <button onClick={() => setContactOpen(true)} className="btn-primary justify-center">
+                预约 AI 商业化诊断 <ArrowRight className="h-4 w-4" />
+              </button>
+              <Link href="/portfolio" className="btn-secondary justify-center">
+                查看大客户战绩
+              </Link>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 26 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.18 }}
+          >
+            <SignalPanel
+              eyebrow="LIVE SIGNALS"
+              title="Deal Intelligence Board"
+              rows={[
+                { label: "Stage", value: "POC → SCALE" },
+                { label: "Buyer", value: "CEO / CFO / CIO" },
+                { label: "Value Map", value: "READY" },
+                { label: "ARR Impact", value: "¥800M+" },
+                { label: "Industry", value: "BANK / GOV / MFG / RETAIL" },
+                { label: "Status", value: profile.statusText },
+              ]}
+              footer={<div className="text-mono text-[10px] uppercase tracking-[0.2em] text-[var(--primary-bright)]">ROI VERIFIED / COMMERCIALIZATION ONLINE</div>}
+            />
           </motion.div>
         </div>
       </section>
 
-      {/* ============ Ticker ============ */}
-      <div className="ticker">
-        <div className="ticker-track">
-          {[...tickerItems, ...tickerItems].map((item, i) => (
-            <span key={i}>{item.includes("¥") || item.includes("FORTUNE") || item.includes("AI") ? <strong>{item}</strong> : item}</span>
-          ))}
-        </div>
-        <div className="ticker-track" aria-hidden>
-          {[...tickerItems, ...tickerItems].map((item, i) => (
-            <span key={i}>{item.includes("¥") || item.includes("FORTUNE") || item.includes("AI") ? <strong>{item}</strong> : item}</span>
-          ))}
-        </div>
-      </div>
+      <SignalStrip items={signalItems} />
 
-      {/* ============ Capabilities ============ */}
-      <section className="relative py-20 md:py-32 px-4 sm:px-10">
-        <div className="max-w-7xl mx-auto">
-          <ScrollReveal>
-            <div className="text-mono text-xs text-[var(--fg-3)] mb-4">// 01 / EXPERTISE</div>
-            <h2 className="text-display mb-16 max-w-3xl">
-              帮助企业从 <span className="text-gradient">AI 概念验证</span> 走向 <span className="text-gradient">规模化落地</span>
-            </h2>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                icon: Building2,
-                title: "Enterprise Sales",
-                desc: "深耕金融、政企、制造、零售四大行业。从 Discovery 到 POC 到签约，端到端管理 7 位数 ARR 项目。",
-                metric: "¥800M+ ARR",
-              },
-              {
-                icon: Brain,
-                title: "AI 战略咨询",
-                desc: "为客户高管设计 AI 战略路线图。把模型能力翻译为可衡量的业务价值，让 CEO 看得懂、CFO 算得清。",
-                metric: "20+ Strategic",
-              },
-              {
-                icon: TrendingUp,
-                title: "团队增长",
-                desc: "从 0 到 1 搭建华东 AI 销售团队。带过 4 个国家、12 名直接下属，三年配额达成率均超过 130%。",
-                metric: "12 People Team",
-              },
-            ].map((cap, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="surface p-8 h-full">
-                  <div className="w-10 h-10 mb-6 rounded-lg bg-[rgba(6,182,212,0.1)] border border-[rgba(6,182,212,0.2)] flex items-center justify-center">
-                    <cap.icon className="w-5 h-5 text-[var(--primary-bright)]" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{cap.title}</h3>
-                  <p className="text-[var(--fg-3)] leading-relaxed mb-6 text-sm">{cap.desc}</p>
-                  <div className="text-mono text-xs text-[var(--primary-bright)] tracking-wider">
-                    {cap.metric}
-                  </div>
+      <section className="px-4 py-16 sm:px-10 md:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-4 md:grid-cols-4">
+            {proofSignals.map((signal, index) => (
+              <ScrollReveal key={signal.label} delay={index * 0.06}>
+                <div className="surface h-full p-6">
+                  <div className="metric-number text-4xl text-[var(--primary-bright)] md:text-5xl">{signal.value}</div>
+                  <div className="mt-3 text-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-4)]">{signal.label}</div>
+                  <p className="mt-4 text-sm leading-6 text-[var(--fg-2)]">{signal.body}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -194,132 +131,66 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============ Featured Cases ============ */}
-      <section className="relative py-20 md:py-32 px-4 sm:px-10 border-t border-[var(--border)]">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-4 py-16 sm:px-10 md:py-24">
+        <div className="mx-auto max-w-7xl">
           <ScrollReveal>
-            <div className="flex flex-wrap items-end justify-between gap-6 mb-16">
-              <div>
-                <div className="text-mono text-xs text-[var(--fg-3)] mb-4">// 02 / CASE STUDIES</div>
-                <h2 className="text-display max-w-2xl">
-                  代表性<span className="text-gradient">大客户项目</span>
-                </h2>
-              </div>
-              <Link href="/portfolio" className="btn-secondary">
-                全部案例 <ArrowRight className="w-4 h-4" />
-              </Link>
+            <div className="mb-12 max-w-4xl">
+              <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">OPERATING MODEL</div>
+              <h2 className="mt-4 text-display">The AI Deal Operating Model</h2>
+              <p className="mt-5 text-lg leading-8 text-[var(--fg-2)]">一套把 AI 从演示推进到预算、采购和规模化落地的商业化路径。</p>
             </div>
           </ScrollReveal>
+          <div className="space-y-4">
+            {operatingModel.map((item, index) => (
+              <ScrollReveal key={item.step} delay={index * 0.06}>
+                <div className="surface grid gap-5 p-5 md:grid-cols-[120px_260px_1fr] md:items-center md:p-7">
+                  <div className="text-mono text-5xl font-black text-[var(--primary-bright)]">{item.step}</div>
+                  <div className="text-mono text-sm font-black uppercase tracking-[0.24em] text-[var(--fg)]">{item.title}</div>
+                  <p className="text-base leading-7 text-[var(--fg-2)]">{item.body}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section className="px-4 py-16 sm:px-10 md:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">DEAL DOSSIERS</div>
+              <h2 className="mt-4 text-display">复杂企业 AI 项目的成交样本。</h2>
+            </div>
+            <Link href="/portfolio" className="btn-secondary">VIEW ALL DOSSIERS <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-2">
             {publishedProjects.slice(0, 4).map((project, index) => (
-              <ScrollReveal key={project.id} delay={index * 0.08}>
-                <Link href={`/portfolio#${project.slug}`}>
-                  <div className="surface-interactive p-8 h-full">
-                    <div className="flex items-start justify-between mb-6">
-                      <div className="text-mono text-xs text-[var(--fg-4)] tracking-wider">
-                        CASE / {String(index + 1).padStart(2, "0")}
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-[var(--fg-4)] transition-all group-hover:translate-x-1" />
-                    </div>
-
-                    <h3 className="text-2xl font-bold mb-3 leading-tight">
-                      {project.title}
-                    </h3>
-                    <p className="text-[var(--fg-3)] text-sm leading-relaxed mb-6">
-                      {project.summary}
-                    </p>
-
-                    {project.metrics && (
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6 pt-6 border-t border-[var(--border)]">
-                        {project.metrics.map((m) => (
-                          <div key={m.label}>
-                            <div className="text-mono text-base font-bold text-[var(--primary-bright)] mb-1">
-                              {m.value}
-                            </div>
-                            <div className="text-[10px] text-[var(--fg-4)] tracking-wider uppercase">
-                              {m.label}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="flex items-center justify-between text-mono text-xs text-[var(--fg-4)]">
-                      <span>{project.timeline}</span>
-                      <span>{project.role}</span>
-                    </div>
-                  </div>
-                </Link>
+              <ScrollReveal key={project.id} delay={index * 0.06}>
+                <DossierCard project={project} index={index} compact href={`/portfolio#${project.slug}`} />
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ============ Insights ============ */}
-      <section className="relative py-20 md:py-32 px-4 sm:px-10 border-t border-[var(--border)]">
-        <div className="max-w-7xl mx-auto">
-          <ScrollReveal>
-            <div className="flex flex-wrap items-end justify-between gap-6 mb-16">
-              <div>
-                <div className="text-mono text-xs text-[var(--fg-3)] mb-4">// 03 / INSIGHTS</div>
-                <h2 className="text-display">
-                  洞察<span className="text-gradient">与方法论</span>
-                </h2>
-              </div>
-              <Link href="/blog" className="btn-secondary">
-                全部文章 <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </ScrollReveal>
-
-          <div className="space-y-2">
-            {publishedPosts.slice(0, 3).map((post, index) => (
-              <ScrollReveal key={post.id} delay={index * 0.08}>
-                <Link href={`/blog/${post.slug}`}>
-                  <div className="group flex flex-col md:flex-row md:items-center gap-4 px-6 py-8 border-b border-[var(--border)] hover:bg-[var(--bg-1)] transition-colors -mx-6">
-                    <div className="text-mono text-xs text-[var(--fg-4)] md:w-24 flex-shrink-0">
-                      {post.publishedAt}
-                    </div>
-                    <h3 className="text-xl md:text-2xl font-bold flex-1 group-hover:text-[var(--primary-bright)] transition-colors">
-                      {post.title}
-                    </h3>
-                    <div className="flex items-center gap-3 flex-shrink-0">
-                      <span className="text-mono text-xs text-[var(--fg-4)]">{post.readTime}</span>
-                      <ArrowRight className="w-4 h-4 text-[var(--fg-4)] transition-all group-hover:translate-x-1 group-hover:text-[var(--primary-bright)]" />
-                    </div>
-                  </div>
-                </Link>
-              </ScrollReveal>
-            ))}
+      <section className="px-4 py-16 sm:px-10 md:py-24">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-8">
+            <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">FIELD NOTES</div>
+            <h2 className="mt-4 text-display">只记录 AI 如何被企业真正买单。</h2>
           </div>
+          {publishedPosts.slice(0, 2).map((post, index) => (
+            <NoteRow key={post.id} post={post} index={index} />
+          ))}
         </div>
       </section>
 
-      {/* ============ CTA ============ */}
-      <section className="relative py-24 md:py-40 px-4 sm:px-10 overflow-hidden border-t border-[var(--border)]">
-        <div className="aurora aurora-cyan" style={{ width: 600, height: 600, top: "10%", left: "20%" }} />
-
-        <ScrollReveal>
-          <div className="max-w-4xl mx-auto text-center relative z-10">
-            <div className="text-mono text-xs text-[var(--fg-3)] mb-6">// 04 / GET IN TOUCH</div>
-            <h2 className="text-display mb-8">
-              开启你的<span className="text-gradient">AI 业务增长</span>
-            </h2>
-            <p className="text-lg text-[var(--fg-3)] mb-12 max-w-2xl mx-auto leading-relaxed">
-              一次 30 分钟的对话，可能改变贵司未来 3 年的 AI 路线。
-            </p>
-            <Link href={`mailto:${profile.email}`} className="btn-primary">
-              <Sparkles className="w-4 h-4" />
-              发送邮件
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </ScrollReveal>
+      <section className="px-4 py-16 sm:px-10 md:py-24">
+        <div className="mx-auto max-w-7xl">
+          <CommercialCTA onPrimaryClick={() => setContactOpen(true)} />
+        </div>
       </section>
 
-      {/* Contact Modal */}
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </div>
   );
