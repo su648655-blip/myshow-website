@@ -118,14 +118,19 @@ const defaultData: SiteData = {
   siteSettings: defaultSiteSettings,
 };
 
-function withSiteDataDefaults(data: Partial<SiteData>): SiteData {
+export function withSiteDataDefaults(data: Partial<SiteData>): SiteData {
+  const mergedProfile = {
+    ...defaultProfile,
+    ...(data.profile || {}),
+  };
+  const defaultRows = defaultSiteSettings.heroBoard.rows.map((row) =>
+    row.label === "Status" ? { ...row, value: mergedProfile.statusText } : row
+  );
+
   return {
     ...defaultData,
     ...data,
-    profile: {
-      ...defaultProfile,
-      ...(data.profile || {}),
-    },
+    profile: mergedProfile,
     contacts: data.contacts || [],
     siteSettings: {
       ...defaultSiteSettings,
@@ -138,7 +143,7 @@ function withSiteDataDefaults(data: Partial<SiteData>): SiteData {
       heroBoard: {
         ...defaultSiteSettings.heroBoard,
         ...(data.siteSettings?.heroBoard || {}),
-        rows: data.siteSettings?.heroBoard?.rows || defaultSiteSettings.heroBoard.rows,
+        rows: data.siteSettings?.heroBoard?.rows || defaultRows,
       },
       homeModules: {
         ...defaultSiteSettings.homeModules,

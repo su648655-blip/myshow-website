@@ -18,8 +18,8 @@ export default function SignalPanel({ eyebrow, title, rows, footer, className = 
         </div>
         {title && <h3 className="mb-5 text-xl font-black tracking-tight text-[var(--fg)] md:text-2xl">{title}</h3>}
         <div className="space-y-3">
-          {rows.map((row) => (
-            <div key={row.label} className="grid grid-cols-[minmax(88px,0.45fr)_1fr] gap-4 border-t border-[var(--border)] pt-3">
+          {rows.map((row, index) => (
+            <div key={`${row.label}-${index}`} className="grid grid-cols-[minmax(88px,0.45fr)_1fr] gap-4 border-t border-[var(--border)] pt-3">
               <div className="text-mono text-[10px] uppercase tracking-[0.18em] text-[var(--fg-4)]">{row.label}</div>
               <div className="text-sm font-semibold text-[var(--fg-2)]">{row.value}</div>
             </div>

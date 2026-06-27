@@ -3,6 +3,7 @@
 import { Download, Upload, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useSiteData } from "@/components/DataProvider";
+import { withSiteDataDefaults } from "@/lib/store";
 import { useToast } from "@/components/Toast";
 
 export default function DataAdminPage() {
@@ -36,7 +37,7 @@ export default function DataAdminPage() {
             return;
           }
           if (!confirm("导入将覆盖当前所有数据，确定继续？")) return;
-          updateData(() => parsed);
+          updateData(() => withSiteDataDefaults(parsed));
           toast.show("数据已导入");
         } catch {
           toast.show("文件解析失败", "error");

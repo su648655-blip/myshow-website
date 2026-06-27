@@ -1,7 +1,7 @@
 "use client";
 
 import { Plus, Save, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSiteData } from "@/components/DataProvider";
 import { useToast } from "@/components/Toast";
 import { defaultSiteSettings, type SiteSettings, type LabelTone, type BackgroundIntensity, type LabelStyle } from "@/lib/store";
@@ -27,13 +27,19 @@ export default function SiteSettingsAdminPage() {
   const toast = useToast();
   const [settings, setSettings] = useState<SiteSettings>(() => cloneSettings(data.siteSettings || defaultSiteSettings));
 
+  useEffect(() => {
+    setSettings(cloneSettings(data.siteSettings || defaultSiteSettings));
+  }, [data.siteSettings]);
+
   const save = () => {
     updateData((current) => ({ ...current, siteSettings: settings }));
     toast.show("前台设置已保存");
   };
 
   const reset = () => {
-    setSettings(cloneSettings(defaultSiteSettings));
+    const defaults = cloneSettings(defaultSiteSettings);
+    setSettings(defaults);
+    updateData((current) => ({ ...current, siteSettings: defaults }));
     toast.show("已恢复默认前台设置");
   };
 

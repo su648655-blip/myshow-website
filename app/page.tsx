@@ -55,8 +55,8 @@ export default function Home() {
               transition={{ duration: 0.55 }}
               className={`mb-6 flex flex-wrap gap-2 ${siteSettings.visual.labelStyle === "restrained" ? "opacity-80" : ""}`}
             >
-              {siteSettings.hero.eyebrowLabels.map((label) => (
-                <PunkLabel key={`${label.text}-${label.tone}`} tone={label.tone}>{label.text}</PunkLabel>
+              {siteSettings.hero.eyebrowLabels.map((label, index) => (
+                <PunkLabel key={`${label.text}-${label.tone}-${index}`} tone={label.tone}>{label.text}</PunkLabel>
               ))}
             </motion.div>
 
