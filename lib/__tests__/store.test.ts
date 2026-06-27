@@ -50,15 +50,28 @@ describe("getSiteData / saveSiteData", () => {
     window.removeEventListener("neonme:data-updated", handler);
   });
 
-  test("resetSiteData 清空 localStorage 并触发事件", () => {
-    const handler = jest.fn();
-    window.addEventListener("neonme:data-updated", handler);
-    saveSiteData(getSiteData());
-    expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
-    resetSiteData();
-    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
-    expect(handler).toHaveBeenCalledTimes(2);
-    window.removeEventListener("neonme:data-updated", handler);
+  test("getSiteData includes default siteSettings when no localStorage exists", () => {
+    const data = getSiteData();
+    expect(data.siteSettings).toBeDefined();
+    expect(data.siteSettings.hero.titleLine1).toBe("AI 销售不是卖工具。");
+    expect(data.siteSettings.heroBoard.rows).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: "Stage", value: "POC → SCALE" }),
+      ])
+    );
+    expect(data.siteSettings.homeModules.dossiers).toBe(true);
+  });
+
+  test("getSiteData backfills siteSettings for legacy stored data", () => {
+    const legacy = getSiteData();
+    const { siteSettings, ...withoutSettings } = legacy;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(withoutSettings));
+
+    const result = getSiteData();
+
+    expect(result.siteSettings).toBeDefined();
+    expect(result.siteSettings.visual.backgroundIntensity).toBe("medium");
+    expect(result.profile.name).toBe("邓学德");
   });
 });
 

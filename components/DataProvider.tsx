@@ -2,10 +2,10 @@
 
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 
-import { getSiteData, saveSiteData, type SiteData } from "@/lib/store";
+import { getSiteData, saveSiteData, defaultSiteSettings, type SiteData } from "@/lib/store";
 import { profile, projects, posts, timeline, skills } from "@/lib/data";
 
-const defaultData: SiteData = { profile, projects, posts, timeline, skills, contacts: [] };
+const defaultData: SiteData = { profile, projects, posts, timeline, skills, contacts: [], siteSettings: defaultSiteSettings };
 
 interface DataContextType {
   data: SiteData;

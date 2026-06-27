@@ -23,6 +23,7 @@ import { useSiteData } from "@/components/DataProvider";
 
 const sidebarItems = [
   { href: "/admin", label: "仪表盘", icon: LayoutDashboard },
+  { href: "/admin/site", label: "前台设置", icon: Sparkles },
   { href: "/admin/profile", label: "个人资料", icon: User },
   { href: "/admin/projects", label: "案例管理", icon: Briefcase },
   { href: "/admin/posts", label: "文章管理", icon: FileText },
