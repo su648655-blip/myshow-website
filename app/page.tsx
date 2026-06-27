@@ -14,6 +14,7 @@ import DossierCard from "@/components/brand/DossierCard";
 import NoteRow from "@/components/brand/NoteRow";
 import CommercialCTA from "@/components/brand/CommercialCTA";
 import PunkLabel from "@/components/brand/PunkLabel";
+import { defaultSiteSettings } from "@/lib/store";
 
 const signalItems = ["DISCOVERY", "POC DESIGN", "ROI TRANSLATION", "CFO BUY-IN", "SCALE", "ENTERPRISE AI"];
 
@@ -35,6 +36,8 @@ const operatingModel = [
 export default function Home() {
   const { data } = useSiteData();
   const { profile } = data;
+  const siteSettings = data.siteSettings || defaultSiteSettings;
+  const heroDescription = siteSettings.hero.description || `${profile.name} / ${profile.title}。${profile.bio}`;
   const publishedProjects = data.projects.filter((p) => p.status === "published");
   const publishedPosts = data.posts.filter((p) => p.status === "published");
   const [contactOpen, setContactOpen] = useState(false);
@@ -42,7 +45,7 @@ export default function Home() {
   return (
     <div className="relative signal-bg">
       <section className="relative min-h-screen overflow-hidden px-4 pt-28 pb-16 sm:px-10 md:pt-36">
-        <HeroSignalBackground />
+        <HeroSignalBackground intensity={siteSettings.visual.backgroundIntensity} scanLines={siteSettings.visual.scanLines} />
 
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:items-center">
           <div>
@@ -50,11 +53,11 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
-              className="mb-6 flex flex-wrap gap-2"
+              className={`mb-6 flex flex-wrap gap-2 ${siteSettings.visual.labelStyle === "restrained" ? "opacity-80" : ""}`}
             >
-              <PunkLabel>AI COMMERCIALIZATION</PunkLabel>
-              <PunkLabel tone="violet">BOARDROOM TRANSLATOR</PunkLabel>
-              <PunkLabel tone="yellow">ROI-FIRST</PunkLabel>
+              {siteSettings.hero.eyebrowLabels.map((label) => (
+                <PunkLabel key={`${label.text}-${label.tone}`} tone={label.tone}>{label.text}</PunkLabel>
+              ))}
             </motion.div>
 
             <motion.h1
@@ -63,8 +66,8 @@ export default function Home() {
               transition={{ duration: 0.75, delay: 0.08 }}
               className="text-mega max-w-5xl"
             >
-              AI 销售不是卖工具。
-              <span className="block text-gradient">是翻译确定性。</span>
+              {siteSettings.hero.titleLine1}
+              <span className="block text-gradient">{siteSettings.hero.titleHighlight}</span>
             </motion.h1>
 
             <motion.p
@@ -73,7 +76,7 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.22 }}
               className="mt-7 max-w-3xl text-lg leading-8 text-[var(--fg-2)] md:text-xl"
             >
-              {profile.name} / {profile.title}。{profile.bio}
+              {heroDescription}
             </motion.p>
 
             <motion.div
@@ -83,10 +86,10 @@ export default function Home() {
               className="mt-9 flex flex-col gap-3 sm:flex-row"
             >
               <button onClick={() => setContactOpen(true)} className="btn-primary justify-center">
-                预约 AI 商业化诊断 <ArrowRight className="h-4 w-4" />
+                {siteSettings.hero.primaryCta} <ArrowRight className="h-4 w-4" />
               </button>
               <Link href="/portfolio" className="btn-secondary justify-center">
-                查看大客户战绩
+                {siteSettings.hero.secondaryCta}
               </Link>
             </motion.div>
           </div>
@@ -97,17 +100,10 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.18 }}
           >
             <SignalPanel
-              eyebrow="LIVE SIGNALS"
-              title="Deal Intelligence Board"
-              rows={[
-                { label: "Stage", value: "POC → SCALE" },
-                { label: "Buyer", value: "CEO / CFO / CIO" },
-                { label: "Value Map", value: "READY" },
-                { label: "ARR Impact", value: "¥800M+" },
-                { label: "Industry", value: "BANK / GOV / MFG / RETAIL" },
-                { label: "Status", value: profile.statusText },
-              ]}
-              footer={<div className="text-mono text-[10px] uppercase tracking-[0.2em] text-[var(--primary-bright)]">ROI VERIFIED / COMMERCIALIZATION ONLINE</div>}
+              eyebrow={siteSettings.heroBoard.eyebrow}
+              title={siteSettings.heroBoard.title}
+              rows={siteSettings.heroBoard.rows}
+              footer={<div className="text-mono text-[10px] uppercase tracking-[0.2em] text-[var(--primary-bright)]">{siteSettings.heroBoard.footer}</div>}
             />
           </motion.div>
         </div>
@@ -115,81 +111,91 @@ export default function Home() {
 
       <SignalStrip items={signalItems} />
 
-      <section className="px-4 py-16 sm:px-10 md:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-4 md:grid-cols-4">
-            {proofSignals.map((signal, index) => (
-              <ScrollReveal key={signal.label} delay={index * 0.06}>
-                <div className="surface h-full p-6">
-                  <div className="metric-number text-4xl text-[var(--primary-bright)] md:text-5xl">{signal.value}</div>
-                  <div className="mt-3 text-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-4)]">{signal.label}</div>
-                  <p className="mt-4 text-sm leading-6 text-[var(--fg-2)]">{signal.body}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-16 sm:px-10 md:py-24">
-        <div className="mx-auto max-w-7xl">
-          <ScrollReveal>
-            <div className="mb-12 max-w-4xl">
-              <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">OPERATING MODEL</div>
-              <h2 className="mt-4 text-display">The AI Deal Operating Model</h2>
-              <p className="mt-5 text-lg leading-8 text-[var(--fg-2)]">一套把 AI 从演示推进到预算、采购和规模化落地的商业化路径。</p>
+      {siteSettings.homeModules.proofSignals && (
+        <section className="px-4 py-16 sm:px-10 md:py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="grid gap-4 md:grid-cols-4">
+              {proofSignals.map((signal, index) => (
+                <ScrollReveal key={signal.label} delay={index * 0.06}>
+                  <div className="surface h-full p-6">
+                    <div className="metric-number text-4xl text-[var(--primary-bright)] md:text-5xl">{signal.value}</div>
+                    <div className="mt-3 text-mono text-[10px] uppercase tracking-[0.2em] text-[var(--fg-4)]">{signal.label}</div>
+                    <p className="mt-4 text-sm leading-6 text-[var(--fg-2)]">{signal.body}</p>
+                  </div>
+                </ScrollReveal>
+              ))}
             </div>
-          </ScrollReveal>
-          <div className="space-y-4">
-            {operatingModel.map((item, index) => (
-              <ScrollReveal key={item.step} delay={index * 0.06}>
-                <div className="surface grid gap-5 p-5 md:grid-cols-[120px_260px_1fr] md:items-center md:p-7">
-                  <div className="text-mono text-5xl font-black text-[var(--primary-bright)]">{item.step}</div>
-                  <div className="text-mono text-sm font-black uppercase tracking-[0.24em] text-[var(--fg)]">{item.title}</div>
-                  <p className="text-base leading-7 text-[var(--fg-2)]">{item.body}</p>
-                </div>
-              </ScrollReveal>
-            ))}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section className="px-4 py-16 sm:px-10 md:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">DEAL DOSSIERS</div>
-              <h2 className="mt-4 text-display">复杂企业 AI 项目的成交样本。</h2>
+      {siteSettings.homeModules.operatingModel && (
+        <section className="px-4 py-16 sm:px-10 md:py-24">
+          <div className="mx-auto max-w-7xl">
+            <ScrollReveal>
+              <div className="mb-12 max-w-4xl">
+                <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">OPERATING MODEL</div>
+                <h2 className="mt-4 text-display">The AI Deal Operating Model</h2>
+                <p className="mt-5 text-lg leading-8 text-[var(--fg-2)]">一套把 AI 从演示推进到预算、采购和规模化落地的商业化路径。</p>
+              </div>
+            </ScrollReveal>
+            <div className="space-y-4">
+              {operatingModel.map((item, index) => (
+                <ScrollReveal key={item.step} delay={index * 0.06}>
+                  <div className="surface grid gap-5 p-5 md:grid-cols-[120px_260px_1fr] md:items-center md:p-7">
+                    <div className="text-mono text-5xl font-black text-[var(--primary-bright)]">{item.step}</div>
+                    <div className="text-mono text-sm font-black uppercase tracking-[0.24em] text-[var(--fg)]">{item.title}</div>
+                    <p className="text-base leading-7 text-[var(--fg-2)]">{item.body}</p>
+                  </div>
+                </ScrollReveal>
+              ))}
             </div>
-            <Link href="/portfolio" className="btn-secondary">VIEW ALL DOSSIERS <ArrowRight className="h-4 w-4" /></Link>
           </div>
-          <div className="grid gap-5 lg:grid-cols-2">
-            {publishedProjects.slice(0, 4).map((project, index) => (
-              <ScrollReveal key={project.id} delay={index * 0.06}>
-                <DossierCard project={project} index={index} compact href={`/portfolio#${project.slug}`} />
-              </ScrollReveal>
+        </section>
+      )}
+
+      {siteSettings.homeModules.dossiers && (
+        <section className="px-4 py-16 sm:px-10 md:py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">DEAL DOSSIERS</div>
+                <h2 className="mt-4 text-display">复杂企业 AI 项目的成交样本。</h2>
+              </div>
+              <Link href="/portfolio" className="btn-secondary">VIEW ALL DOSSIERS <ArrowRight className="h-4 w-4" /></Link>
+            </div>
+            <div className="grid gap-5 lg:grid-cols-2">
+              {publishedProjects.slice(0, 4).map((project, index) => (
+                <ScrollReveal key={project.id} delay={index * 0.06}>
+                  <DossierCard project={project} index={index} compact href={`/portfolio#${project.slug}`} />
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {siteSettings.homeModules.fieldNotes && (
+        <section className="px-4 py-16 sm:px-10 md:py-24">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-8">
+              <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">FIELD NOTES</div>
+              <h2 className="mt-4 text-display">只记录 AI 如何被企业真正买单。</h2>
+            </div>
+            {publishedPosts.slice(0, 2).map((post, index) => (
+              <NoteRow key={post.id} post={post} index={index} />
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section className="px-4 py-16 sm:px-10 md:py-24">
-        <div className="mx-auto max-w-5xl">
-          <div className="mb-8">
-            <div className="text-mono text-[10px] uppercase tracking-[0.24em] text-[var(--primary-bright)]">FIELD NOTES</div>
-            <h2 className="mt-4 text-display">只记录 AI 如何被企业真正买单。</h2>
+      {siteSettings.homeModules.bottomCta && (
+        <section className="px-4 py-16 sm:px-10 md:py-24">
+          <div className="mx-auto max-w-7xl">
+            <CommercialCTA onPrimaryClick={() => setContactOpen(true)} />
           </div>
-          {publishedPosts.slice(0, 2).map((post, index) => (
-            <NoteRow key={post.id} post={post} index={index} />
-          ))}
-        </div>
-      </section>
-
-      <section className="px-4 py-16 sm:px-10 md:py-24">
-        <div className="mx-auto max-w-7xl">
-          <CommercialCTA onPrimaryClick={() => setContactOpen(true)} />
-        </div>
-      </section>
+        </section>
+      )}
 
       <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </div>

@@ -791,6 +791,14 @@ select.input {
   100% { transform: translateY(22rem) rotate(-8deg); opacity: 0; }
 }
 
+.hero-signal-low .hero-signal-grid { opacity: 0.24; }
+.hero-signal-low .hero-orb { opacity: 0.42; }
+.hero-signal-low .hero-scan { opacity: 0.16; }
+
+.hero-signal-high .hero-signal-grid { opacity: 0.62; }
+.hero-signal-high .hero-orb { opacity: 0.84; }
+.hero-signal-high .hero-scan { opacity: 0.72; }
+
 @media (max-width: 768px) {
   .hero-signal-grid { opacity: 0.28; background-size: 36px 36px; }
   .hero-orb { filter: blur(58px); opacity: 0.52; }
